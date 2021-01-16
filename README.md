@@ -1,6 +1,6 @@
-# studentsBA
+# studentsBAP
 *
-* studentsBA or "Students Background Analysis", is my first data-analysis project. As a particpant in project luanched by Ran.données 2021 Data.trek. this readme file will be updated as the project progress.
+* studentsBA or "Students Background Analysis Performance", is my first data-analysis project. As a particpant in project luanched by Ran.données 2021 Data.trek. this readme file will be updated as the project progress.
 *
 ## Project descrition:
  *Anylysing students perfomance in three diferents exams, against their background as gender, race/ethnicity, parental level of education, lunch.
