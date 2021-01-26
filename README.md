@@ -11,6 +11,8 @@
 ### *Main module:*
 * This is the console interface for end users, it give an inetractive acces for differents modules of project.
 * Module Statistics, it will be imported by main module to perform descriptive statistics and make a report.
-* Module machine learning, it will be imported by main module to peform clasification and prediction. 
+* Module machine learning, it will be imported by main module to peform clasification and prediction.
+*In this module we do also data clean up, we have to verifiy if there is any missing data and try out what better way 
+*deal with them and if there is a wrong data, say a non-numeric value inside a numeric column etc..
 * Other comming up later on.
 ### Author Kamel Haoua
