@@ -4,10 +4,10 @@
 
 ## Project descrition:
  *Anylysing students perfomance in three diferents exams, against their background as gender, race/ethnicity, parental level of education and lunch .
- *Find any correlayions between performance and any of categorical variables and find out the most    signifcants.
+ *Find any correlayions between performance and any of categorical variables and find out the most    signifcants ones.
  *Clasification of the of race regarding the best performance. 
  *Clasification of the of gender regarding the best performance.
- *Predicting performance from categorical features.
+ *Predicting performance from a given categorical variables.
 ### *Main module:*
 * This is the console interface for end users, it give an inetractive acces for differents modules of project.
 * Module Statistics, it will be imported by main module to perform descriptive statistics and make a report.
