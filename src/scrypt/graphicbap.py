@@ -6,12 +6,16 @@ import seaborn as sns
 import sys
 
 #plt.rcParams["figure.figsize"] = [16, 16]
-%config InlineBackend.figure_format = 'retina'
+#%config InlineBackend.figure_format = 'retina'
 sns.set_theme(style="whitegrid")
+ds = None
 
 def main():
-  #ask user which graph or print pass
-  print('Graphic module')
+    select_graph()
+      
+def select_graph():
+    #ask user which graph or print pass
+    print('Graphic module')
     choice=input('Please make a choice:\n' \
               +'Enter 1 for categorical variables\n' \
               +'Enter 2 for extrem scores\n' \
@@ -20,22 +24,22 @@ def main():
               +'Enter 5 for all score for each feature\n' \
               +'Press enter key to cancel\n' )
   
-  if (not choice):
-    return
-  else:
-    if (choice=='1'):
-        categorical_variables()
-    elif (choice=='2') :
-        extreme_scores()
-    elif (choice=='3') :
-        mean_graph()
-    elif (choice=='4') :
-        box_graphs()
-    elif (choice=='5') :      
-        allscores_for_ech_feature()
-    else: 
-        return  
-
+    if (not choice):
+        return
+    else:
+        if (choice=='1'):
+            categorical_variables()
+        elif (choice=='2') :
+            extreme_scores()
+        elif (choice=='3') :
+            mean_graph()
+        elif (choice=='4') :
+            box_graphs()
+        elif (choice=='5') :      
+            allscores_for_ech_feature()
+        else: 
+            return
+    
 def categorical_variables():
     # 1) Categorical variables distribution
     #Gender 

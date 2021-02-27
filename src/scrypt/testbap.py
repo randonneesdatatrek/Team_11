@@ -6,6 +6,10 @@ against each another.
 """
 from scipy.stats import mannwhitneyu
 import scipy.stats as stats
+import pandas as pd
+
+ds = None
+
 def main():
     run_all_tests()
     

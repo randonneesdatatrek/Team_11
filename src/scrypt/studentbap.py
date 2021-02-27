@@ -1,5 +1,6 @@
 """ 
 Studentbap Main Module as command line interface
+This scrypt should be run within ipython from cms or terminal
 """
 import pandas as pd
 import sys
@@ -13,30 +14,32 @@ import testbap
 pd.set_option('display.max_columns', 8)
 pd.set_option('display.width', 500)
 
-
-actions = ['analys','graph','test','ml']
+actions = ['analysis','graph','test','ml']
 action = None
 ds = None
 dataset_path='data/StudentsPerformance.csv'
 env=get_ipython().__class__.__name__
 """
-In order to run script from terminal we create this main method in each module
+In order to run script from terminal we created this main method in each module
 """
 def main() :
     
-    print('=====================================')
+    print('==========================================')
     for i in range(6) :
         if i==3 :
-            print('|            StudentBAP             |')
-            print('|    Student Background Analysis    |')
-            print('|    Coppy right Kamel Haoua 2021   |')
-            print('|                                   |')
-    print('=====================================')
+            print('|              StudentBAP               |')
+            print('|Student Background Analysis Performance|')
+            print('|      Coppy right Kamel Haoua 2021     |')
+            print('|                                       |')
+    print('==========================================')
     print('Initializing dataset...')
     print()
     load_dataset()
     cleanup_dataset(num_columns = ds[['math score','reading score','writing score']].columns)
     datasetInfos()
+    if env != 'TerminalInteractiveShell' : # if executed from notebook don't ask user for actions
+        return
+    
     action = get_user_action()
     if ((action == None) or (len(action) == 0)):
         print('Sorry i can\'t understand your action,! see you next time.')
@@ -100,31 +103,24 @@ def execute_action(act=None):
         return  
     else :  
         print('executing action: '+str(act)+'\nPlease wait this action may take a while... ')
-        if env == 'TerminalInteractiveShell' : # execution from terminal we call secripts main method
-            if act=='analys' :
-                analysbap.main()
-            elif act=='graph' :
+        if env == 'TerminalInteractiveShell' :
+            # execution from terminal we call secripts main method
+            if act=='analysis':
+                analysisbap.ds=ds
+                analysisbap.main()
+            elif act=='graph':
+                graphicbap.ds=ds
                 graphicbap.main() 
-            elif act=='test' :
+            elif act=='test':
+                testbap.ds=ds
                 testbap.main() 
-            elif act=='ml' :
+            elif act=='ml':
+                mlbap.ds=ds
                 mlbap.main()
             else:
                 print('Unknown action: ('+str(act)+')')    
         else : # execution from notebook we call methods in this notebook
-            if act=='analys' :
-                check_data_balancing('gender')
-                check_data_balancing('race_ethnicity')
-                analysis()
-            elif act=='graph' :
-                selectGraph() 
-            elif act=='test' :
-                run_all_tests()
-            elif act=='ml' :
-                init_ml()
-                start_ml()
-            else:
-                print('Unknown action: ('+str(act)+')')
+            return
             
 
 # verify dataset

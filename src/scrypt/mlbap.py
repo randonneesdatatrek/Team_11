@@ -13,6 +13,8 @@ import numpy as np
 pd.set_option('display.max_columns', 8)
 pd.set_option('display.width', 500)
 
+ds = None
+
 def main():
     init_ml()
     start_ml()

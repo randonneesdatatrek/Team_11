@@ -5,8 +5,8 @@ import sys
 
 import pandas as pd
 
-"""
-"""
+ds = None
+
 def main():
     check_data_balancing('gender')
     check_data_balancing('race_ethnicity')
