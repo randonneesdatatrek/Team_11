@@ -15,6 +15,7 @@ pd.set_option('display.width', 500)
 
 ds = None
 
+
 def main():
     init_ml()
     start_ml()
@@ -31,7 +32,7 @@ def start_ml():
     elif task == '1': # task is prediction
         npt = input('Enter your sample as array of shape (n row of 5 features) or press enter to run sample test data :')
         
-        if (npt == 'exit'):
+        if npt == 'exit':
             return
         
         elif ((npt is None ) or (len(npt)==0)):# If no data, we use a x_test samples
@@ -152,7 +153,8 @@ def alogo_pefromance_score(target=None):
     svc_score = clf_svc.score(trfm,y_test[target].head(rows_count))
     print()
     print('Algorithms performance scores:')
-    dic={'algorithm':['Random Forest','Support Vector Machine'], \
+    print()
+    dic={'algorithm':['Random_Forest_Classifier','Support_Vector_Machine'], \
          'Score':[rf_score,svc_score]}
     print(pd.DataFrame(dic))
     print()

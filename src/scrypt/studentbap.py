@@ -1,6 +1,6 @@
 """ 
 Studentbap Main Module as command line interface
-This scrypt should be run within ipython from cms or terminal
+This script should be run within ipython from cms or terminal
 """
 import pandas as pd
 import sys
@@ -20,7 +20,7 @@ ds = None
 dataset_path='data/StudentsPerformance.csv'
 env=get_ipython().__class__.__name__
 """
-In order to run script from terminal we created this main method in each module
+In order to run this script from terminal we create this main method in each module
 """
 def main() :
     
@@ -29,7 +29,7 @@ def main() :
         if i==3 :
             print('|              StudentBAP               |')
             print('|Student Background Analysis Performance|')
-            print('|      Coppy right Kamel Haoua 2021     |')
+            print('|      Coppyright Kamel Haoua 2021     |')
             print('|                                       |')
     print('==========================================')
     print('Initializing dataset...')
@@ -41,7 +41,7 @@ def main() :
         return
     
     action = get_user_action()
-    if ((action == None) or (len(action) == 0)):
+    if action is None:
         print('Sorry i can\'t understand your action,! see you next time.')
         exit()
     elif action == 'exit':
@@ -54,34 +54,34 @@ if file path not exists it stops the execution of script
 """        
 def load_dataset():
     global ds
-    if (os.path.exists(dataset_path)):
+    if os.path.exists(dataset_path):
         ds = pd.read_csv(dataset_path)
         print('Reading dataset ok')
     else:
-        print('file '+dataset_path+' doesn\'t exits. Please check file system and try agin later.' )    
+        print('file '+dataset_path+' doesn\'t exits. Please check file system and try again later.' )    
         return
 
-#display help how to use scripts
+# Display help how to use scripts
 def show_help():
     print('usage :\n'+ \
     'action \n'+ \
     '\n'+ \
     'Where action is one of the following:\n'+ \
-    'analys: perfom all statistical analysis.\n'+ \
+    'analysis: perfom all statistical analysis.\n'+ \
     'graph: display graphics and plots\n'+ \
     'test: run statistical tests\n'+ \
     'ml: make a prediction and show features importance classification\n'+ \
     'exit: stop script\n')
     
-#Prompts user for action he wants to perfom and return user std input text
+# Prompts user for action he wants to perfom and return user std input text
 def get_user_action():
     print('Type help or any action.?')
     print()
-    maxtry=3;
-    while(maxtry>0):
-        action = input("action: ")
-        if ((action is None) or len(action) == 0 ):
-            print ('No action specified!. type help or shoose one action: \n'+', '.join(actions))
+    maxtry=3
+    while maxtry>0:
+        action = input("Please type one action: ")
+        if action is None :
+            print('No action specified!. type help or choose one action: \n'+', '.join(actions))
             print()
         elif ((action in actions) or (action == 'exit')) :
             return action;
@@ -91,30 +91,30 @@ def get_user_action():
             print('Unknown action. "'+action+'"\n'+'type help or choose one action: \n'+', '.join(actions))
             print()
         if maxtry == 0 :
-            return None;
+            return None
         else:
-            maxtry-=1;
+            maxtry-=1
                 
-#Execute initiation methods and execute one action                
+#Execute initialization  methods and execute one action                
 def execute_action(act=None):
     
-    if(act=='exit') :
-        print('stoping script... good bye.')
+    if act=='exit' :
+        print('stopping script... good bye.')
         return  
     else :  
         print('executing action: '+str(act)+'\nPlease wait this action may take a while... ')
-        if env == 'TerminalInteractiveShell' :
+        if env == 'TerminalInteractiveShell':
             # execution from terminal we call secripts main method
-            if act=='analysis':
-                analysisbap.ds=ds
-                analysisbap.main()
-            elif act=='graph':
+            if act=='analysis' :
+                analysbap.ds=ds
+                analysbap.main()
+            elif act=='graph' :
                 graphicbap.ds=ds
                 graphicbap.main() 
-            elif act=='test':
+            elif act=='test' :
                 testbap.ds=ds
                 testbap.main() 
-            elif act=='ml':
+            elif act=='ml' :
                 mlbap.ds=ds
                 mlbap.main()
             else:
@@ -122,12 +122,11 @@ def execute_action(act=None):
         else : # execution from notebook we call methods in this notebook
             return
             
-
 # verify dataset
 
 """
  if there is a missing or wrong values we have to process each column depending on its data type
- if data type is not numeric we remove the row from dataset, if is nemuric we replace
+ if data type is not numeric we remove the row from dataset, if is numeric we replace
  non conform values with NaN and replace NaN values with the mean of that column
 """
 def cleanup_dataset(num_columns=None) :
@@ -144,7 +143,7 @@ def cleanup_dataset(num_columns=None) :
 
     print(columns)
     print('Replacing  wrong values with null..')
-    if(num_columns is None):
+    if num_columns is None:
         num_columns=ds.select_dtypes(include='int64')
         print()
                 
@@ -169,11 +168,11 @@ def cleanup_dataset(num_columns=None) :
         print(column_with_null_value)   
     print('Replacing numeric null values with mean')
     replcement_values={}
-    if(len(column_with_null_value)>0) :
+    if len(column_with_null_value)>0 :
         for c in column_with_null_value :
-            if(c in num_columns) :
+            if c in num_columns:
                 meanvalue=ds[c].mean(skipna=True)
-                replcementValues[c]=meanvalue
+                replcement_values[c]=meanvalue
     ds.fillna(value=replcement_values, inplace=True)
     print('Ok, replacement done')
     print('Removing rows with null categorical values')
@@ -182,10 +181,10 @@ def cleanup_dataset(num_columns=None) :
     print('\n')
 
 """
-Dataset discritption
+Dataset description
 """
 def datasetInfos() :
-    if(os.path.exists(dataset_path)) :
+    if os.path.exists(dataset_path) :
         print('File size: ')
         print(os.stat(dataset_path).st_size)
     if ds is None :

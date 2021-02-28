@@ -24,19 +24,19 @@ def select_graph():
               +'Enter 5 for all score for each feature\n' \
               +'Press enter key to cancel\n' )
   
-    if (not choice):
+    if not choice:
         return
     else:
-        if (choice=='1'):
+        if choice=='1':
             categorical_variables()
-        elif (choice=='2') :
+        elif choice=='2' :
             extreme_scores()
-        elif (choice=='3') :
+        elif choice=='3' :
             mean_graph()
-        elif (choice=='4') :
+        elif choice=='4' :
             box_graphs()
-        elif (choice=='5') :      
-            allscores_for_ech_feature()
+        elif choice=='5' :      
+            all_scores_for_each_feature()
         else: 
             return
     
@@ -173,8 +173,7 @@ def box_graphs():
     sns.boxplot(ax=ax[4,0],y='test_preparation_course',x='math_score', data=ds)
     sns.boxplot(ax=ax[4,1],y='test_preparation_course',x='reading_score', data=ds)
     sns.boxplot(ax=ax[4,2],y='test_preparation_course',x='writing_score', data=ds)
-    
-    
+     
     plt.show() 
     
 def all_scores_for_each_feature():
@@ -186,8 +185,8 @@ def all_scores_for_each_feature():
     mean_perormance=ds.eval('(math_score + reading_score + writing_score)/3').rename('mean_perormance')
     sns.barplot(ax=ax[0,0], data=ds,y=mean_perormance , x='gender',palette=['hotpink','blue']).set_title('Mean for all scores', fontsize=18)
     sns.barplot(ax=ax[1,0], data=ds,y=mean_perormance , x='race_ethnicity')
-    ple=sns.barplot(ax=ax[2,0], data=ds,y=mean_perormance , x='parental_level_of_education')
-    ple.set_xticklabels(ple.get_xticklabels(),rotation=20)
+    ple_1=sns.barplot(ax=ax[2,0], data=ds,y=mean_perormance , x='parental_level_of_education')
+    ple_1.set_xticklabels(ple_1.get_xticklabels(),rotation=20)
     
     sns.barplot(ax=ax[3,0], data=ds,y=mean_perormance , x='lunch')
     sns.barplot(ax=ax[4,0], data=ds,y=mean_perormance , x='test_preparation_course')
@@ -195,21 +194,24 @@ def all_scores_for_each_feature():
     # Math score
     sns.barplot(ax=ax[0,1], data=ds,y='math_score' , x='gender',palette=['hotpink','blue']).set_title('Math score', fontsize=18)
     sns.barplot(ax=ax[1,1], data=ds,y='math_score' , x='race_ethnicity')
-    sns.barplot(ax=ax[2,1], data=ds,y='math_score' , x='parental_level_of_education').set_xticklabels(ple.get_xticklabels(),rotation=30)
+    ple_2=sns.barplot(ax=ax[2,1], data=ds,y='math_score' , x='parental_level_of_education')
+    ple_2.set_xticklabels(ple_2.get_xticklabels(),rotation=30)
     sns.barplot(ax=ax[3,1], data=ds,y='math_score' , x='lunch')
     sns.barplot(ax=ax[4,1], data=ds,y='math_score' , x='test_preparation_course')
     
     # Reading score
     sns.barplot(ax=ax[0,2], data=ds,y='reading_score' , x='gender',palette=['hotpink','blue']).set_title('Reading score', fontsize=18)
     sns.barplot(ax=ax[1,2], data=ds,y='reading_score' , x='race_ethnicity')
-    sns.barplot(ax=ax[2,2], data=ds,y='reading_score' , x='parental_level_of_education').set_xticklabels(ple.get_xticklabels(),rotation=30)
+    ple_3=sns.barplot(ax=ax[2,2], data=ds,y='reading_score' , x='parental_level_of_education')
+    ple_3.set_xticklabels(ple_3.get_xticklabels(),rotation=30)
     sns.barplot(ax=ax[3,2], data=ds,y='reading_score' , x='lunch')
     sns.barplot(ax=ax[4,2], data=ds,y='reading_score' , x='test_preparation_course')
     
     # Writing scores
     sns.barplot(ax=ax[0,3], data=ds,y='writing_score' , x='gender',palette=['hotpink','blue']).set_title('Writing scores', fontsize=18)
     sns.barplot(ax=ax[1,3], data=ds,y='writing_score' , x='race_ethnicity')
-    sns.barplot(ax=ax[2,3], data=ds,y='writing_score' , x='parental_level_of_education').set_xticklabels(ple.get_xticklabels(),rotation=30)
+    ple_4=sns.barplot(ax=ax[2,3], data=ds,y='writing_score' , x='parental_level_of_education')
+    ple_4.set_xticklabels(ple_4.get_xticklabels(),rotation=30)
     sns.barplot(ax=ax[3,3], data=ds,y='writing_score' , x='lunch')
     sns.barplot(ax=ax[4,3], data=ds,y='writing_score' , x='test_preparation_course')
     

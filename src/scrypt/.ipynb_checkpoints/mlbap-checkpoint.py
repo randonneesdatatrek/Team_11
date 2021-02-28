@@ -1,170 +1,164 @@
-""" 
-Main Module as comand line interface
 """
-import pandas as pd
+Module Machine learning RandomForestClassifier
+"""
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OrdinalEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn import svm
 import sys
-import os.path
+import pandas as pd
 import numpy as np
-import 
+pd.set_option('display.max_columns', 8)
+pd.set_option('display.width', 500)
 
-actions = ['analys','test','predict','graph']
-action = None
 ds = None
-datasetPath='data/StudentsPerformance.csv'
 
-def main() :
-    
-    print('=====================================')
-    for i in range(6) :
-        if(i==3) :
-            print('|            StudentBAP             |')
-            print('|    Student Background Analysis    |')
-            print('|    Coppy right Kamel Haoua 2021   |')
-            print('|                                   |')
-    print('=====================================')
-    
-    action = getUserAction()
-    if(action==None):
-        print('Sorry i can\'t understand your action,! see you next time.')
-    elif(action=='exit'):
-         exit()
-    else:
-        executeAction(action)
-def loadDataset():
-    global ds
-    if(os.path.exists(datasetPath)):
-        ds= pd.read_csv(datasetPath)
-        print('Reading dataset ok')
-    else:
-        print('file '+datasetPath+' doesn\'t exits. Please check file system and try agin later.' )    
 
-#diplay help
-def showHelp():
-    print('usage :\n'+ \
-    'action [options]\n'+ \
-    '\n'+ \
-    'Where action is one of the following:\n'+ \
-    'describe: perfome all statistical analysis and show result as text\n'+ \
-    'graph: display graph or show all graphs\n'+ \
-    'graphx: display grap  with expanation\n'+ \
-    'exit: stop script\n'+ \
-    '\n'+ \
-    'Option is one of the following:\n'+ \
-    'pdf,console, default is console')
+def main():
+    init_ml()
+    start_ml()
     
-#return user std inpute text
-def getUserAction():
-    print('What would like to do now.?')
-    maxtry=3;
-    while(maxtry>0):
-        action = input("action: ")
-        print(action)
-        if(action==None ):
-            print ('No action specified!. type help or shoose one action: \n'+', '.join(actions))
-            print()
-        elif (len( action)==0) :
-            print ('No action specified!. type help or shoose one action: \n'+', '.join(actions))
-            print()
-        elif(action in actions or action=='exit') :
-            return action;
-        elif(action=='help') :
-            showHelp() 
-        else:
-            print('Not recognized action. "'+action+'"\n'+'type help or choose one action: \n'+', '.join(actions))
-            print()
-        if(maxtry==0) :
-            return None;
-        else:
-            maxtry-=1;
-                
-#execute one action                
-def executeAction(act=None):
-    if(action=='exit') :
-        print('Shutting down kernel. good bye.')
-        exit()  
-    else :  
-        loadDataset()
-        cleanUpDataset()
+def start_ml():
+    print('Machine learning is warming up\n')
+    print('================================================')
+    
+    task = input('Please type 1 for Prediction or 2 Features importance and hit enter key ↲')
+    if task == '2': # task is features importance
+        features_importance()
+        return
+    
+    elif task == '1': # task is prediction
+        npt = input('Enter your sample as array of shape (n row of 5 features) or press enter to run sample test data :')
         
-        print('executing action: '+act+'\nPlease wait this action may take a while... ')
-        if(action=='analys'):
-            analys()
-        exit()
-
-# verify dataset
-
-"""
- if there is a missing or wrong value values we have to process each column depending on its data type
- if data type is not numeric we remove the row from dataset, if is nemuric we replace
- non consistence values with NaN and replace NaN values with the mean   of that column
-"""
-
-def cleanUpDataset(num_columns=None) :
-    print('Process missing and or wrong values..')
-    print('--------------------------------------------------------')
-    columns= ds.columns
-    #some column names contain white-space character, so we have to replace it with underscore character(_)
-    print('Correcting columns names..')
-    ds.columns=ds.columns.str.replace(' ','_')
-    ds.columns=ds.columns.str.replace('\/','_')
-    print('Replacing  wrong values with null..')
-    if(num_columns==None):
-        num_columns=ds.select_dtypes(include='int64')
-        print('\n')
-        print('Numeric columns are')
-        print(num_columns.columns)
-        for nc in num_columns :
-            ds[nc]=ds[nc].apply(lambda x : np.nan if str(type(x))=="<class 'str'>" else x)
-    print('\n')
-    print('Collecting columns values with null..')    
-    columnWithNullValue=list()
-    for column in columns :
-        datatype=ds[column].dtype
-        print('column '+column+'  data type '+str(datatype))
-        if (ds[column].isnull().values.any==True):
-            columnWithNullValue.append(column)   
-    print('---------------------------------------------------------')
+        if npt == 'exit':
+            return
+        
+        elif ((npt is None ) or (len(npt)==0)):# If no data, we use a x_test samples
+            init_ml()
+            for t in targets:
+                predict(ftrs=None, target=t)
+            return
+       
+        elif len(npt)!=5: # prediction for user's data
+                print('Not correct input, expected input.\n'.joint(targets))
+                return
+        else :
+            npt = np.array(npt.split(','))
+            npt = npt.reshape(1,5)
+            data = (pd.DataFrame(npt))
+            init_ml()
+            for t in targets:
+                predict(ftrs=data,target=t)
     
-    if(len(columnWithNullValue)==0):
-        print('columns check finish, ok.')
-    else :
-        print('some columns have null values\n')
-        print(columnWithNullValue)   
-    print('Replacing numeric null values with mean')
-    replcementValues={}
-    if(len(columnWithNullValue)>0) :
-        for c in columnWithNullValue :
-            if(c in num_columns) :
-                meanvalue=ds[c].mean(skipna=True)
-                replcementValues[c]=meanvalue
-    ds.fillna(value=replcementValues, inplace=True)
-    print('Ok, replacement done')
-    print('Removing rows with null categorical values')
-    ds.dropna(inplace=True)
-    print('Ok,  Removing done')
-    print('\n')
+    else:# no task 
+        print('sorry I can''t understand you.')
+        return      
+        
+    
+def init_ml() :
+    # Set random seed, so it start from 0
+    np.random.seed(0)
+    global targets    
+    targets = ds[['math_score','reading_score','writing_score']]
+    #split dataset 
+    global x_train, x_test, y_train, y_test
+    x_train, x_test, y_train, y_test = train_test_split(ds, targets, test_size=0.2, random_state =0)
+    # preparing features
+    gender=x_train['gender'].unique()
+    race_ethnicity=x_train['race_ethnicity'].unique()
+    parental_level_of_education=x_train['parental_level_of_education'].unique()
+    lunch=x_train['lunch'].unique()
+    test_preparation_course=x_train['test_preparation_course'].unique()
+    #transforming features values from string to numeric
+    #ohe=OneHotEncoder(categories=[gender,race_ethnicity,parental_level_of_education,lunch,test_preparation_course])
+    global oe
+    oe=OrdinalEncoder(categories=[gender,race_ethnicity,parental_level_of_education,lunch,test_preparation_course])
+    global train_ds
+    global test_ds
+    train_ds = x_train[['gender','race_ethnicity','parental_level_of_education','lunch','test_preparation_course']]
+    test_ds=x_test[['gender','race_ethnicity','parental_level_of_education','lunch','test_preparation_course']]
+  
+    #ohe.fit(cat_ds)
+    oe.fit(train_ds)
+    #OneHotEncoder()
+    OrdinalEncoder()
+    #features = ohe.transform(train_ds).toarray()
+    global features
+    features = oe.transform(train_ds)
+    #don't use this encoder because it generates more new columns, (see note in introduction)
+    #trfm=ohe.transform([['male','group E','some high school','standard','none']]).toarray()
+    
+    # Training algorithms
+    global clf_rf
+    global clf_svc
+    # initiate random forest algo.
+    clf_rf=RandomForestClassifier(n_jobs=2, random_state=0)
+    # initiate support vector machine algo. (it does not suport multi-class output)
+    clf_svc = svm.SVC(kernel='linear', C=1, random_state=0)
+   
+    
+def features_importance():
+    print('-----------------------------------')
+    clf_rf=RandomForestClassifier(n_jobs=2, random_state=0)
+    clf_rf.fit(np.asarray(features), y_train)
+    
+    features_importance=clf_rf.feature_importances_
+    fi_df=pd.DataFrame(features_importance.reshape(1,5), columns=['gender','race_ethnicity','parental_level_of_education','lunch','test_preparation_course'])
 
-def datasetInfos() :
-    if(os.path.exists(datasetPath)) :
-        print('File size')
-        print(os.stat(datasetPath).st_size)
-    if(ds == None) :
-        print('No data available yet !.')
-        sys.exit()
-    else :    
-        print('Dataset shape rows (count x comluns count):')
-        print(ds.shape)
-        print()
-        print('Dolumns names:')
-        print(ds.columns)
-        print()
-        print('Numeric columns:')
-        print(ds.select_dtypes(include='int64').columns)
-        print()
-        print('Statistics:')
-        print(ds.describe())
-
-#execute the main program
-
-if __name__ == '__main__':
+    print('Features importance classification using Random forest classifier')
+    print
+    print(fi_df)
+    print()
+    fi_df.plot(kind='bar', xlabel='Features', ylabel='Importance level' ,figsize=[10,10],)
+    
+def predict(ftrs = None, target=None):
+    print()    
+    clf_rf.fit(np.asarray(features), y_train[target])
+    clf_svc.fit(np.asarray(features),y_train[target])
+    """
+    This is a sample to predict scores 
+    trfm=oe.transform([['male','group E','some high school','standard','none'],\
+                   ['female','group E','some high school','standard','none'],\
+                   ['male','group C','some high school','standard','none'],\
+                   ['female','group C','some high school','standard','none']])
+    """
+    global rows_count
+    rows_count=200
+    global trfm
+    if((ftrs is None) or (len(ftrs)==0)):
+        trfm=oe.transform(test_ds.head(rows_count))
+    else:
+        rows_count=len(ftrs.index)
+        trfm=oe.transform(ftrs)
+        
+    pred_df=clf_rf.predict(trfm)
+    #pred_df=pd.DataFrame(pred_df.reshape(rows_count,3),columns=['math_score','reading_score','writing_score'])
+    print()
+    print('prediction for '+target +' using random forest classifier ')
+    print(pred_df)
+    alogo_pefromance_score(target)
+    print('prediction for '+target +' students using svm support vector machine ')
+    print()
+    print(clf_svc.predict(trfm))
+    alogo_pefromance_score(target)
+    print()
+    
+def alogo_pefromance_score(target=None):
+    if target is None:
+        prtin('Not target specified')
+        return
+    rf_score = clf_rf.score(trfm, y_test[target].head(rows_count))
+    svc_score = clf_svc.score(trfm,y_test[target].head(rows_count))
+    print()
+    print('Algorithms performance scores:')
+    print()
+    dic={'algorithm':['Random_Forest_Classifier','Support_Vector_Machine'], \
+         'Score':[rf_score,svc_score]}
+    print(pd.DataFrame(dic))
+    print()
+    
+if __name__=="__main__":
     main()
+  
